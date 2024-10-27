@@ -28,6 +28,8 @@ LOGLEVEL = logging.INFO
 logging.basicConfig(
     level=LOGLEVEL, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
 )
+if not pathlib.Path("Server-Helper").exists():
+    os.mkdir("Server-Helper")
 
 # Delect minecraft exists
 if pathlib.Path(".minecraft").exists():
@@ -46,21 +48,47 @@ else:
 
 # Delect Version 1.21 Fabric 0.16.0 exists
 # Read json
-with open(pathlib.Path("version_delector.json"), "r") as f2:
-    try:
+try:
+    with open(pathlib.Path("Server-Helper/version_delector.json"), "r") as f2:
         delector_data = json.load(f2)
-    except FileNotFoundError:
-        logging.log(logging.ERROR, "读取版本检测器失败! 找不到文件 version_delector.json")
-        logging.log(logging.INFO, "尝试自动下载...")
-        
+except FileNotFoundError:
+    logging.log(logging.ERROR, "读取版本检测器失败! 找不到文件 version_delector.json")
+    logging.log(logging.INFO, "尝试自动下载...")
+    try:
+        wget.download(url="https://raw.githubusercontent.com/Aether-254/Server-Helper/refs/heads/master/Server-Helper/version_delector.json", out="Server-Helper/version_delector.json")
     except Exception as e:
-        logging.log(logging.CRITICAL, f"读取版本检测器失败! Expection: {e}")
-        
-    logging.log(logging.INFO, "读取版本检测器成功!")
+        logging.log(logging.CRITICAL, f"下载版本检测器失败! Expection: {e}")
+        exit(1)
+    else:
+        logging.log(logging.INFO, "下载成功! 请重新运行程序...")
+        exit(1)
+except Exception as e:
+    logging.log(logging.CRITICAL, f"读取版本检测器失败! Expection: {e}")
+    exit(1)
+logging.log(logging.INFO, "读取版本检测器成功!")
 
-with open(pathlib.Path("1.21_delector.json"), "r") as f3:
-    delector1210_data = json.load(f3)
-    logging.log(logging.INFO, "读取版本检测器成功!")
+#with open(pathlib.Path("1.21_delector.json"), "r") as f3:
+#    delector1210_data = json.load(f3)
+#    logging.log(logging.INFO, "读取版本检测器成功!")
+
+try:
+    with open(pathlib.Path("Server-Helper/1.21_delector.json"), "r") as f3:
+        delector1210_data = json.load(f3)
+except FileNotFoundError:
+    logging.log(logging.ERROR, "读取版本检测器失败! 找不到文件 1.21_delector.json")
+    logging.log(logging.INFO, "尝试自动下载...")
+    try:
+        wget.download(url="https://raw.githubusercontent.com/Aether-254/Server-Helper/refs/heads/master/Server-Helper/1.21_delector.json", out="Server-Helper/1.21_delector.json")
+    except Exception as e:
+        logging.log(logging.CRITICAL, f"下载版本检测器失败! Expection: {e}")
+        exit(1)
+    else:
+        logging.log(logging.INFO, "下载成功! 请重新运行程序...")
+        exit(1)
+except Exception as e:
+    logging.log(logging.CRITICAL, f"读取版本检测器失败! Expection: {e}")
+    exit(1)
+logging.log(logging.INFO, "读取版本检测器成功!")
 
 jdatalist = []
 
