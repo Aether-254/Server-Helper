@@ -1,0 +1,7 @@
+{
+    "id": "1.21",
+    "javaVersion": { "component": "java-runtime-delta", "majorVersion": 21 },
+    "mainClass": "net.minecraft.client.main.Main",
+    "minimumLauncherVersion": 21,
+    "type": "release"
+}
